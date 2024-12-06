@@ -320,7 +320,8 @@ func GetDbNamespace(url string, filterFunc func(name string) bool, sslRootFile s
 	queryConditon := GetListCollectionQueryCondition(conn)
 	var dbNames []string
 	if dbNames, err = conn.Client.ListDatabaseNames(nil, bson.M{}); err != nil {
-		err = fmt.Errorf("get database names of mongodb[%s] error: %v", url, err)
+		err = fmt.Errorf("get database names of mongodb[%s] error: %v",
+			BlockMongoUrlPassword(url, "***"), err)
 		return nil, nil, err
 	}
 	// sort by db names
@@ -331,7 +332,8 @@ func GetDbNamespace(url string, filterFunc func(name string) bool, sslRootFile s
 	for _, db := range dbNames {
 		colNames, err := conn.Client.Database(db).ListCollectionNames(nil, queryConditon)
 		if err != nil {
-			err = fmt.Errorf("get collection names of mongodb[%s] db[%v] error: %v", url, db, err)
+			err = fmt.Errorf("get collection names of mongodb[%s] db[%v] error: %v",
+				BlockMongoUrlPassword(url, "***"), db, err)
 			return nil, nil, err
 		}
 

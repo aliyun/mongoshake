@@ -169,8 +169,8 @@ func (coordinator *ReplicationCoordinator) startDocumentReplication() error {
 
 		dbSyncer := docsyncer.NewDBSyncer(i, src.URL, src.ReplicaName, toUrl, trans, orphanFilter, qos, fromIsSharding)
 		dbSyncer.Init()
-		LOG.Info("document syncer-%d do replication for url=%v", i, src.URL)
-
+		LOG.Info("document syncer-%d do replication for url=%v", i,
+			utils.BlockMongoUrlPassword(src.URL, "***"))
 		wg.Add(1)
 		nimo.GoRoutine(func() {
 			defer wg.Done()
